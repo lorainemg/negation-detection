@@ -6,7 +6,7 @@ services:
     container_name: ng-negation
     build: docker/
     volumes: 
-      - "src:/src"
+      - "./src:/src"
     ports:
       - "8501:8501"
     working_dir: "/src"

@@ -1,3 +1,4 @@
+"""Module with helper functions"""
 import networkx as nx
 import spacy
 import sklearn
@@ -5,7 +6,7 @@ from sklearn.svm import SVC, LinearSVC
 from sklearn_crfsuite import metrics
 from sklearn.metrics import make_scorer
 from typing import List, Dict, Union
-from sklearn.model_selection import RandomizedSearchCV, GridSearchCV
+from sklearn.model_selection import GridSearchCV
 from scipy import stats
 
 nlp = spacy.load('es_core_news_sm')

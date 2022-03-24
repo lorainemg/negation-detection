@@ -1,4 +1,4 @@
-import sklearn_crfsuite
+"""Module to train scope classifier"""
 #import eli5
 from sklearn_crfsuite import CRF
 import numpy

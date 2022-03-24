@@ -1,3 +1,4 @@
+"""Module to help evaluate the classifiers"""
 from sklearn.model_selection import KFold
 
 from utils import make_labels_cue, get_gold_cues, get_idx_cues

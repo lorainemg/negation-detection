@@ -1,16 +1,18 @@
+"""Module with main function to train and test the cue and scope models"""
 from os import path, walk
 from sys import path as p
 
 from sklearn.externals import joblib
 from cue_trainer import extract_cue_features
 from scope_trainer import extract_scope_features
+import es_core_news_sm
 from parse_corpus import *
 from evaluation import *
 from utils import *
 import spacy
 import pickle
 
-nlp = spacy.load('es_core_news_sm')
+nlp = es_core_news_sm.load()
 
 def read():
     """
@@ -31,31 +33,6 @@ def read():
     return instances
 
 
-def start():
-    create_model()
-    # TEST: to get input sentences and detect the cues and its scope 
-    # get_input()  
-
-
-def get_input():
-    """TESTING: to get input sentences and detect the cues and its scope"""
-    cue_clf, cue_vect, scope_clf, scope_vect = load_clsf()
-    instances = get_sent()
-    cue_pred = get_cue_pred(instances, cue_clf, cue_vect)
-    scope_pred = get_scope_pred(instances, get_idx_cues(cue_pred), scope_clf, scope_vect)
-    res = []
-    for sent, c_p, s_p in zip(instances, cue_pred, scope_pred):
-        for idx, c, s in zip(sent, c_p, s_p):
-            word = sent[idx]['wd']
-            if c == 1:
-                res.append((word, 'C'))
-            elif s == 'I':
-                res.append((word, 'I'))
-            else:
-                res.append((word, 'O'))
-    print(res)
-
-
 def get_cue_pred(instances, clf, vect):
     "Gets the predicted negatives cues"
     cue_feat = extract_cue_features(instances)
@@ -70,28 +47,6 @@ def get_scope_pred(instances, pred, clf, vect):
     X = vect.transform(dev_feat)
     y_predict = clf.predict(X)
     return make_labels_scope(instances, pred, y_predict)
-
-
-def get_sent():
-    "Get a sent from the user and extracts its features"
-    s = input('Please enter a sentence: ')
-    doc = nlp(s)
-    edges = []
-    instances = []
-    for sent in doc.sents:
-        sentence = {}
-        len = 0
-        for token in sent:
-            for child in token.children:
-                edges.append((token.i, child.i))
-            feat = {'head': token.head.i, 'dep' : token.dep_, 'pos' : token.pos_, 'lem' : token.lemma_, 'wd': token.text }
-            len += 1
-            sentence[token.i] = feat
-        sentence['length'] = len
-        sentence['undir-graph'] = nx.Graph(edges)
-        sentence['dir-graph'] = nx.DiGraph(edges)
-        instances.append(sentence)
-    return instances
 
 
 def load_clsf():
@@ -158,4 +113,5 @@ def scope_model(clsf, vect, dev_set, prediction):
     print('Accuracy: %.6f' %(accuracy))
 
 
-start()
+if __name__ == '__main__':
+    create_model()
