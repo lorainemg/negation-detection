@@ -4,14 +4,14 @@ import sklearn
 from sklearn.svm import SVC, LinearSVC
 from sklearn_crfsuite import metrics
 from sklearn.metrics import make_scorer
-# from sklearn.grid_search import GridSearchCV
+from typing import List, Dict, Union
 from sklearn.model_selection import RandomizedSearchCV, GridSearchCV
 from scipy import stats
 
 nlp = spacy.load('es_core_news_sm')
 
 
-def make_labels_cue(sentences, labels):
+def make_labels_cue(sentences: List[Dict[Union[int, dict], str]], labels: List[str]) -> List[str]:
     """Make labels for the words that weren't predicted by the classifier"""
     y = []
     i = 0
@@ -28,7 +28,7 @@ def make_labels_cue(sentences, labels):
     return y
 
 
-def make_labels_scope(sentence, prediction, labels):
+def make_labels_scope(sentence: List[Dict[Union[int, dict], str]], prediction: List[int], labels: List[str]) -> List[str]:
     """Make labels for all the sentences predicted by the classifier"""
     y = []
     count = 0
@@ -49,7 +49,7 @@ def make_labels_scope(sentence, prediction, labels):
     return y
 
 
-def join_prediction(predictions):
+def join_prediction(predictions: List[str]) -> str:
     res = predictions[0]
     for pred in predictions[1:]:
         for i in range(len(pred)):
@@ -58,7 +58,7 @@ def join_prediction(predictions):
     return res
 
 
-def normalize(labels):
+def normalize(labels: List[str]) -> List[str]:
     """
     Normalize the labels of the corpus.
     Changing `begin`, `end` and `center` tags to `inside` tag.
@@ -72,7 +72,7 @@ def normalize(labels):
     return res
 
 
-def get_idx_cues(y_predict):
+def get_idx_cues(y_predict: List[int]) -> List[List[int]]:
     "Gets the index of the cues in the sentence"
     res = []
     for pred in y_predict:
@@ -84,7 +84,7 @@ def get_idx_cues(y_predict):
     return res
 
 
-def get_gold_cues(sentences):
+def get_gold_cues(sentences: List[dict]) -> List[List[str]]:
     "Returns an array with the negation cues of the sentences in the corpus"
     res = []
     for sent in sentences:
@@ -96,7 +96,7 @@ def get_gold_cues(sentences):
     return res
 
 
-def get_gold_scope(sentences):
+def get_gold_scope(sentences: List[dict]) -> List[List[str]]:
     "Returns an array with the negation scope of the sentences in the corpus"
     sent_labels = []
     for sent in sentences:
