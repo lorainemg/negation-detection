@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  main:
+    image: negation
+    container_name: ng-negation
+    build: docker/
+    volumes: 
+      - "src:/src"
+    ports:
+      - "8501:8501"
+    working_dir: "/src"
+    command: ["streamlit", "run", "app.py"]
