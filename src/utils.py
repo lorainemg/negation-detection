@@ -59,6 +59,10 @@ def join_prediction(predictions):
 
 
 def normalize(labels):
+    """
+    Normalize the labels of the corpus.
+    Changing `begin`, `end` and `center` tags to `inside` tag.
+    """
     res = []
     for label in labels:
         if label == 'B' or label == 'E' or label == 'C':
@@ -69,6 +73,7 @@ def normalize(labels):
 
 
 def get_idx_cues(y_predict):
+    "Gets the index of the cues in the sentence"
     res = []
     for pred in y_predict:
         cues = []
@@ -80,6 +85,7 @@ def get_idx_cues(y_predict):
 
 
 def get_gold_cues(sentences):
+    "Returns an array with the negation cues of the sentences in the corpus"
     res = []
     for sent in sentences:
         partial = []
@@ -91,6 +97,7 @@ def get_gold_cues(sentences):
 
 
 def get_gold_scope(sentences):
+    "Returns an array with the negation scope of the sentences in the corpus"
     sent_labels = []
     for sent in sentences:
         labels = ['O' for key in sent if isinstance(key, int)]
@@ -103,6 +110,9 @@ def get_gold_scope(sentences):
 
 
 def analize_coef(vect, clf):
+    """
+    Function to analize coefficients of selected classifier.
+    """
     features = vect.inverse_transform(clf.coef_)[0]
     res = sorted(features, key=features.get)
     print('Most Positive features')
@@ -151,6 +161,7 @@ def get_head_cue_path(graph, sent, cue_idx, word_idx):
 
 
 def make_discrete_distance(dist):
+    "Make discrete de distance of the selected method"
     if dist <= 3:
         return 'close'
     elif dist <= 7:
@@ -160,6 +171,7 @@ def make_discrete_distance(dist):
 
 
 def test_params(X, y, pos_label):
+    "Test through grid search different parameters for Logistic Regression"
     parameters = {'C': [0.001, 0.01, 0.1, 1, 5, 10, 15], 'max_iter': [100, 150, 200], 'penalty':['l1', 'l2']}
                     # 'solver':['newton-cg', 'lbfgs', 'liblinear', 'sag']}    #'newton-cg', 'lbfgs' and 'sag' only works for l2
     scorer = make_scorer(sklearn.metrics.f1_score, pos_label=pos_label)

@@ -19,7 +19,7 @@ def read():
     """
     pth = path.join(p[0], 'SFU_Review_SP_NEG')
     instances = []
-    for (thisDir, subsHere, filesHere) in walk(pth):
+    for (thisDir, _, filesHere) in walk(pth):
         thisDir = path.normpath(thisDir)
         for filename in filesHere:
             if filename.endswith('.xml'):
@@ -57,6 +57,7 @@ def get_input():
 
 
 def get_cue_pred(instances, clf, vect):
+    "Gets the predicted negatives cues"
     cue_feat = extract_cue_features(instances)
     dev_vect = vect.transform(cue_feat)
     predict = clf.predict(dev_vect)
@@ -64,6 +65,7 @@ def get_cue_pred(instances, clf, vect):
 
 
 def get_scope_pred(instances, pred, clf, vect):
+    "Gets the predicted negative scopes"
     dev_feat = extract_scope_features(instances, pred)
     X = vect.transform(dev_feat)
     y_predict = clf.predict(X)
@@ -71,6 +73,7 @@ def get_scope_pred(instances, pred, clf, vect):
 
 
 def get_sent():
+    "Get a sent from the user and extracts its features"
     s = input('Please enter a sentence: ')
     doc = nlp(s)
     edges = []
@@ -127,6 +130,7 @@ def create_model():
 
 
 def save_models(cue_clsf, cue_vect, scope_clsf, scope_vect):
+    "Save the trained models"
     pickle.dump(cue_clsf, open(r"resources/cue_clf.pkl", 'wb'))
     pickle.dump(cue_vect, open(r'resources/cue_vect.pkl', 'wb'))
     pickle.dump(scope_clsf, open(r'resources/scope_clf.pkl', 'wb'))
@@ -134,6 +138,7 @@ def save_models(cue_clsf, cue_vect, scope_clsf, scope_vect):
 
 
 def cue_model(svm, vect, dev_set):
+    "Tests the negation cue model"
     y_predict, y_true = test_cue_model(svm, vect, dev_set)
     # get_cue_errors(y_predict, y_true, dev_set)
     precision, recall, f1, accuracy = f1_evaluation(y_true, y_predict)
@@ -144,6 +149,7 @@ def cue_model(svm, vect, dev_set):
 
 
 def scope_model(clsf, vect, dev_set, prediction):
+    "Tests the negation scope model"
     y_predict, y_true = test_scope_model(clsf, vect, dev_set, prediction)
     # get_scope_errors(y_predict, y_true, dev_set)
     print(metrics.flat_classification_report(y_true, y_predict))

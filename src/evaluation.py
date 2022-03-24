@@ -10,6 +10,7 @@ from utils import metrics, get_gold_scope, make_labels_scope
 
 
 def test_cue_model(svm, vectorizer, dev_set):
+    "Tests cue model from the development set"
     dev_feat = extract_cue_features(dev_set)
     dev_label = get_labels_cue(dev_set)
     dev_vect = vectorizer.transform(dev_feat)
@@ -22,6 +23,7 @@ def test_cue_model(svm, vectorizer, dev_set):
 
 
 def test_scope_model(clsf, vect, dev_set, prediction):
+    "Tests scope model from the development set"
     dev_feat = extract_scope_features(dev_set, prediction)
     y_t = get_gold_scope(dev_set)
     X = vect.transform(dev_feat)
@@ -31,6 +33,7 @@ def test_scope_model(clsf, vect, dev_set, prediction):
 
 
 def f1_evaluation(y_true, y_predict, pos_label=1):
+    "F1 evaluation of the class vectors"
     precision = metrics.flat_precision_score(y_true, y_predict, pos_label=pos_label)
     recall = metrics.flat_recall_score(y_true, y_predict, pos_label=pos_label)
     f1 = metrics.flat_f1_score(y_true, y_predict, pos_label=pos_label)
@@ -39,6 +42,7 @@ def f1_evaluation(y_true, y_predict, pos_label=1):
 
 
 def cross_validation(sentences):
+    "Cross validates both classifiers performance"
     kf = KFold(n_splits=30)
     score_cue = [[], [], [], []]
     score_scope = [[], [], [], []]
@@ -78,6 +82,7 @@ def cross_validation(sentences):
 
 
 def get_cue_errors(y_predict, y_true, sent):
+    "Gets the errors of the cue predictions"
     i, count = 0, 0
     for predict, gold in zip(y_predict, y_true):
         if predict != gold:
@@ -88,6 +93,7 @@ def get_cue_errors(y_predict, y_true, sent):
 
 
 def get_scope_errors(y_predict, y_true, sent):
+    "Gets the errors of the scope predictions"
     i, count = 0, 0
     for predict, gold in zip(y_predict, y_true):
         if predict != gold:
@@ -98,6 +104,7 @@ def get_scope_errors(y_predict, y_true, sent):
 
 
 def print_cue(sent, predict, gold):
+    "Print cue information (for debugging)"
     print(sent['tokens'])
     pprint(sent['cues'])
     pprint(sent['mw_cues'])
@@ -108,6 +115,7 @@ def print_cue(sent, predict, gold):
 
 
 def print_scope(sent, predict, gold):
+    "Print scope information (for debugging)"
     print(sent['tokens'])
     print(sent['scopes'])
     print(predict)
@@ -117,7 +125,7 @@ def print_scope(sent, predict, gold):
 
 
 def final_test_model(instances):
-    """Prints the cross validation score of the cue and the scope classifier"""
+    "Prints the cross validation score of the cue and the scope classifier"
     scores_cue, scores_scope, scr_gold_scp = cross_validation(instances)
     prec_cue, recall_cue, f1_cue , acc_cue = scores_cue
     print('-----------------------------------CUE----------------------------------------------')

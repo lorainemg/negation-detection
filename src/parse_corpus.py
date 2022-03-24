@@ -88,7 +88,7 @@ def get_dependency_graph(tokens, sentence):
 
 
 def get_structure(scp, cues, mw_cues, word, sentence, i, neg, tokens):
-    """Parses the negative structure of the sentence"""
+    "Parses the negative structure of the sentence"
     scope = word.getchildren()[0]
     items = word.items()
     neg_val = not any(i == ('value', 'noneg') for i in items)
@@ -113,7 +113,7 @@ def get_structure(scp, cues, mw_cues, word, sentence, i, neg, tokens):
 
 
 def get_scope(scp, cues, mw_cues, scope, sentence, i, neg, tokens, neg_val):
-    """Gets the scope of the sentence, getting its cues and scopes"""
+    "Gets the scope of the sentence, getting its cues and scopes"
     for component in scope.getchildren():
         if component.tag == 'neg_structure':
             i = get_structure(scp, cues, mw_cues, component, sentence, i, neg, tokens)
@@ -135,7 +135,7 @@ def get_scope(scp, cues, mw_cues, scope, sentence, i, neg, tokens, neg_val):
 
 
 def get_neg(component, sentence, cues, mw_cues, scp, i, tokens, neg_val):
-    """Get the negative cues, including simple and multiwords cues"""
+    "Get the negative cues, including simple and multiwords cues"
     for word in component.getchildren():
         if word.tag == 'negexp':
             i = get_neg(word, sentence, cues, mw_cues, scp, i, tokens, neg_val)
@@ -159,7 +159,7 @@ def get_neg(component, sentence, cues, mw_cues, scp, i, tokens, neg_val):
 
 
 def skip_event(component, sentence, scp, i, cues, mw_cues, neg, tokens, neg_val):
-    """Skips the informative event in the corpus, because we are not going to parsed it"""
+    "Skips the informative event in the corpus, because we are not going to parsed it"
     for word in component.getchildren():
         if word.tag == 'neg_structure':
             i = get_structure(scp, cues, mw_cues, word, sentence, i, neg, tokens)

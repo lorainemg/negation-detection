@@ -10,7 +10,7 @@ from utils import get_cue_dep_path, get_head_cue_path
 
 
 def train_scope_learner(sentences, prediction):
-    """Trains the scope classifier. Returns an instance of the classifier"""
+    "Trains the scope classifier. Returns an instance of the classifier"
     X = extract_scope_features(sentences, prediction)
     y = get_labels(sentences, prediction)
     vect = DictVectorizer()
@@ -123,6 +123,7 @@ def get_labels(sentences, prediction):
 
 
 def get_scope(scopes, c_idx):
+    "Gets the scope of an index"
     for idx, scp in enumerate(scopes):
         if any(c_idx == word[1] for word in scp):
             return idx
