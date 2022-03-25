@@ -2,7 +2,6 @@
 from os import path, walk
 from sys import path as p
 
-from sklearn.externals import joblib
 from cue_trainer import extract_cue_features
 from scope_trainer import extract_scope_features
 import es_core_news_sm
@@ -28,7 +27,7 @@ def read():
                 file = path.join(thisDir, filename)
                 for sent in read_file(file):
                     instances.append(sent)
-    joblib.dump(instances, 'resources/sentences.pkl')
+    pickle.dump(instances, 'resources/sentences.pkl')
     # shuffle(instances)
     return instances
 
