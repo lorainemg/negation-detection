@@ -1,4 +1,5 @@
 """Module to parse the corpus"""
+import nltk
 from nltk import data
 from xml.etree.ElementTree import ElementTree
 import spacy

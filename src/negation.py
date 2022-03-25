@@ -2,6 +2,7 @@
 from os import path, walk
 from sys import path as p
 
+import joblib
 from cue_trainer import extract_cue_features
 from scope_trainer import extract_scope_features
 import es_core_news_sm
@@ -12,6 +13,7 @@ import spacy
 import pickle
 
 nlp = es_core_news_sm.load()
+
 
 def read():
     """
@@ -27,7 +29,7 @@ def read():
                 file = path.join(thisDir, filename)
                 for sent in read_file(file):
                     instances.append(sent)
-    pickle.dump(instances, 'resources/sentences.pkl')
+    joblib.dump(instances, 'resources/sentences.pkl')
     # shuffle(instances)
     return instances
 
@@ -62,7 +64,8 @@ def create_model():
     Creates the model based on the corpus. 
     Prints the score of both classifier and the final test is optional
     """
-    instances = joblib.load('resources/sentences.pkl')
+    read()
+    instances = joblib.load('resources\sentences.pkl')
     # lex = get_cue_lexicon(instances)
     
     train_size = int(len(instances)*0.8)
