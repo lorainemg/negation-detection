@@ -183,3 +183,43 @@ def test_params(X, y, pos_label):
     for mean, std, params in zip(means, stds, clf.cv_results_['params']):
         print('%0.5f (+/-%0.03f) for %r' %(mean, std*2, params))
     print('Best parameters found on development set: %s' % clf.best_params_)
+
+
+def get_sent_feat(s: str) -> dict:
+    "Get a sent from the user and extracts its features"
+    doc = nlp(s)
+    edges = []
+    instances = []
+    for sent in doc.sents:
+        sentence = {}
+        len = 0
+        for token in sent:
+            for child in token.children:
+                edges.append((token.i, child.i))
+            feat = {'head': token.head.i, 'dep' : token.dep_, 'pos' : token.pos_, 'lem' : token.lemma_, 'wd': token.text }
+            len += 1
+            sentence[token.i] = feat
+        sentence['length'] = len
+        sentence['undir-graph'] = nx.Graph(edges)
+        sentence['dir-graph'] = nx.DiGraph(edges)
+        instances.append(sentence)
+    return instances
+
+
+def reformat_prediction(features, cue_pred, scope_pred):
+    """
+    Reformats cue and scope predictions to express them in a
+    human-readable format.
+    """
+    res = []
+    for sent, c_p, s_p in zip(features, cue_pred, scope_pred):
+        for idx, c, s in zip(sent, c_p, s_p):
+            word = sent[idx]['wd']
+            if c == 1:
+                res.append((word, 'C'))
+            elif s == 'I':
+                res.append((word, 'I'))
+            else:
+                res.append((word, 'O'))
+    print(res)
+    return res
