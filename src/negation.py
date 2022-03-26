@@ -9,6 +9,8 @@ import es_core_news_sm
 from parse_corpus import *
 from evaluation import *
 from utils import *
+# from sklearn.metrics import classification_report
+from sklearn_crfsuite.metrics import flat_classification_report
 import spacy
 import pickle
 
@@ -29,7 +31,7 @@ def read():
                 file = path.join(thisDir, filename)
                 for sent in read_file(file):
                     instances.append(sent)
-    joblib.dump(instances, 'resources/sentences.pkl')
+    joblib.dump(instances, 'sentences.pkl')
     # shuffle(instances)
     return instances
 
@@ -65,7 +67,7 @@ def create_model():
     Prints the score of both classifier and the final test is optional
     """
     read()
-    instances = joblib.load('resources\sentences.pkl')
+    instances = joblib.load('sentences.pkl')
     # lex = get_cue_lexicon(instances)
     
     train_size = int(len(instances)*0.8)
@@ -99,7 +101,7 @@ def cue_model(svm, vect, dev_set):
     y_predict, y_true = test_cue_model(svm, vect, dev_set)
     # get_cue_errors(y_predict, y_true, dev_set)
     precision, recall, f1, accuracy = f1_evaluation(y_true, y_predict)
-    print(metrics.flat_classification_report(y_true, y_predict))
+    # print(classification_report(y_true, y_predict))
     print("Precision: %.6f    Recall: %.6f  F1 Score: %.6f" % (precision, recall, f1))
     print('Accuracy: %.6f' %(accuracy))
     return get_idx_cues(y_predict)
@@ -109,7 +111,7 @@ def scope_model(clsf, vect, dev_set, prediction):
     "Tests the negation scope model"
     y_predict, y_true = test_scope_model(clsf, vect, dev_set, prediction)
     # get_scope_errors(y_predict, y_true, dev_set)
-    print(metrics.flat_classification_report(y_true, y_predict))
+    # print(classification_report(y_true, y_predict))
     precision, recall, f1, accuracy = f1_evaluation(y_true, y_predict, pos_label="I")
     print("Precision: %.6f    Recall: %.6f  F1 Score: %.6f" %(precision, recall, f1))
     print('Accuracy: %.6f' %(accuracy))

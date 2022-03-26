@@ -4,16 +4,18 @@ from nltk import data
 from xml.etree.ElementTree import ElementTree
 import spacy
 import networkx as nx
+import es_core_news_sm
 
-nlp = spacy.load('es_core_news_sm')
+
+nlp = es_core_news_sm.load()
 
 def read_file(filename):
     """
     Reads the file, its supossed to have the format of the sfu corpus.
     Returns a dictionary representing the sentences in the corpus with all its data stored
     """
-    sfu_file = data.find(filename)
-    sfu = ElementTree().parse(sfu_file)
+    # sfu_file = data.find(filename)
+    sfu = ElementTree().parse(filename)
     sentences = []
     for sent in sfu.getchildren():
         sentence = {}
@@ -77,8 +79,8 @@ def get_dependency_graph(tokens, sentence):
     for token in doc:
         for child in token.children:
             digraph.add_edge(token.i, child.i)
-            graph.add_edge(token.i, child.i, {'dir': '/'})
-            graph.add_edge(child.i, token.i, {'dir': '\\'})
+            graph.add_edge(token.i, child.i, tag={'dir': '/'})
+            graph.add_edge(child.i, token.i, tag={'dir': '\\'})
             # edges.append((token.i, child.i))
         if token.i in sentence:
             sentence[token.i]['head'] = token.head.i

@@ -15,7 +15,7 @@ def train_scope_learner(sentences, prediction):
     y = get_labels(sentences, prediction)
     vect = DictVectorizer()
     X = vect.fit_transform(X)
-    clsf = LogisticRegression(penalty='l1')# LinearSVC()
+    clsf = LogisticRegression(penalty='l2')# LinearSVC()
     # test_params(X, y, 'I')
     clsf.fit(X, y)
     return clsf, vect
