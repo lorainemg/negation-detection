@@ -128,3 +128,4 @@ dmypy.json
 # Pyre type checker
 .pyre/
 src/SFU_Review_SP_NEG
+src/resources/sentences.pkl
