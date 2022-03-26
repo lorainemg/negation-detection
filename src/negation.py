@@ -6,6 +6,7 @@ import joblib
 from cue_trainer import extract_cue_features
 from scope_trainer import extract_scope_features
 import es_core_news_sm
+from pathlib import Path
 from parse_corpus import *
 from evaluation import *
 from utils import *
@@ -31,7 +32,7 @@ def read():
                 file = path.join(thisDir, filename)
                 for sent in read_file(file):
                     instances.append(sent)
-    joblib.dump(instances, 'sentences.pkl')
+    joblib.dump(instances, Path('src/resources/sentences.pkl'))
     # shuffle(instances)
     return instances
 
@@ -54,20 +55,20 @@ def get_scope_pred(instances, pred, clf, vect):
 
 def load_clsf():
     """Loads the classifier store in resources"""
-    cue_clf = pickle.load(open(r"resources/cue_clf.pkl", 'rb'))
-    cue_vect = pickle.load(open(r'resources/cue_vect.pkl', 'rb'))
-    scope_clf = pickle.load(open(r'resources/scope_clf.pkl', 'rb'))
-    scope_vect = pickle.load(open(r'resources/scope_vect.pkl', 'rb'))
+    cue_clf = pickle.load(open(Path("src/resources/cue_clf.pkl"), 'rb'))
+    cue_vect = pickle.load(open(Path('src/resources/cue_vect.pkl'), 'rb'))
+    scope_clf = pickle.load(open(Path('src/resources/scope_clf.pkl'), 'rb'))
+    scope_vect = pickle.load(open(Path('src/resources/scope_vect.pkl'), 'rb'))
     return cue_clf, cue_vect, scope_clf, scope_vect
 
 
 def create_model():
     """
     Creates the model based on the corpus. 
-    Prints the score of both classifier and the final test is optional
+    Prints the score of both classifier and the final test is optional.
     """
     read()
-    instances = joblib.load('sentences.pkl')
+    instances = joblib.load(Path('src/resources/sentences.pkl'))
     # lex = get_cue_lexicon(instances)
     
     train_size = int(len(instances)*0.8)
@@ -84,16 +85,16 @@ def create_model():
     labels = get_gold_cues(train_set)
     clsf, vect = train_scope_learner(train_set, labels)
     scope_model(clsf, vect, dev_set, prediction)
-    # save_models(clf, cue_vect, clsf, vect)
+    save_models(clf, cue_vect, clsf, vect)
     final_test_model(instances)
 
 
 def save_models(cue_clsf, cue_vect, scope_clsf, scope_vect):
     "Save the trained models"
-    pickle.dump(cue_clsf, open(r"resources/cue_clf.pkl", 'wb'))
-    pickle.dump(cue_vect, open(r'resources/cue_vect.pkl', 'wb'))
-    pickle.dump(scope_clsf, open(r'resources/scope_clf.pkl', 'wb'))
-    pickle.dump(scope_vect, open(r'resources/scope_vect.pkl', 'wb'))
+    pickle.dump(cue_clsf, open(Path("src/resources/cue_clf.pkl"), 'wb'))
+    pickle.dump(cue_vect, open(Path('src/resources/cue_vect.pkl'), 'wb'))
+    pickle.dump(scope_clsf, open(Path('src/resources/scope_clf.pkl'), 'wb'))
+    pickle.dump(scope_vect, open(Path('src/resources/scope_vect.pkl'), 'wb'))
 
 
 def cue_model(svm, vect, dev_set):

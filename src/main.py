@@ -1,7 +1,7 @@
 """Module to test the classifier in console"""
 import networkx as nx
 
-from negation import get_cue_pred, get_scope_pred, get_sent, load_clsf
+from negation import get_cue_pred, get_scope_pred, load_clsf
 from utils import get_idx_cues, get_sent_feat, reformat_prediction
 from negation import nlp
 
