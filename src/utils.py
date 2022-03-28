@@ -66,6 +66,7 @@ def normalize(labels: List[str]) -> List[str]:
     """
     res = []
     for label in labels:
+        label = label[0]
         if label == 'B' or label == 'E' or label == 'C':
             res.append('I')
         else:

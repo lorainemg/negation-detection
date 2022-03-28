@@ -85,6 +85,7 @@ def create_model():
     labels = get_gold_cues(train_set)
     clsf, vect = train_scope_learner(train_set, labels)
     scope_model(clsf, vect, dev_set, prediction)
+    
     save_models(clf, cue_vect, clsf, vect)
     final_test_model(instances)
 
@@ -102,7 +103,7 @@ def cue_model(svm, vect, dev_set):
     y_predict, y_true = test_cue_model(svm, vect, dev_set)
     # get_cue_errors(y_predict, y_true, dev_set)
     precision, recall, f1, accuracy = f1_evaluation(y_true, y_predict)
-    # print(classification_report(y_true, y_predict))
+    print('Results of the cue model')
     print("Precision: %.6f    Recall: %.6f  F1 Score: %.6f" % (precision, recall, f1))
     print('Accuracy: %.6f' %(accuracy))
     return get_idx_cues(y_predict)
@@ -113,6 +114,7 @@ def scope_model(clsf, vect, dev_set, prediction):
     y_predict, y_true = test_scope_model(clsf, vect, dev_set, prediction)
     # get_scope_errors(y_predict, y_true, dev_set)
     # print(classification_report(y_true, y_predict))
+    print('Results of the scope model')
     precision, recall, f1, accuracy = f1_evaluation(y_true, y_predict, pos_label="I")
     print("Precision: %.6f    Recall: %.6f  F1 Score: %.6f" %(precision, recall, f1))
     print('Accuracy: %.6f' %(accuracy))

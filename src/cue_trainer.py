@@ -11,7 +11,8 @@ def train_cue_learner(sentences):
     y = get_labels_cue(sentences)
     vect = DictVectorizer()
     X = vect.fit_transform(features)
-    clf = LogisticRegression(penalty='l2', max_iter=150) # LinearSVC(C=C_Value)
+    # clf = LogisticRegression(penalty='l2', max_iter=150) # LinearSVC(C=C_Value)
+    clf = LinearSVC()
     clf.fit(X, y)
     # test_params(X, y, pos_label=1)
     return clf, vect
