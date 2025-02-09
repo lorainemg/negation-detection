@@ -1,5 +1,32 @@
-# Detection of Negation
+# Negation Detection
 
-The automatic detection of negation and the words they affect is an important task that could benefit other Natural Language Processing tasks such as Information Extraction, Sentiment Analysis and Question Answering. In the present work a solution of the negation problem is proposed based in supervised machine learning techniques. The essence is the detection of the negation signals and their scope, all of it in Spanish texts. The work is done in two phases: in the first one the signals are identified and in the second the whole scope of this signals is determined.
+This repository contains a machine learning-based solution for the automatic detection of negation and the words they affect in Spanish text. The solution is divided into two phases: first, it identifies the negation signals, and second, it determines the scope of these signals. This approach can improve tasks in Natural Language Processing (NLP) such as Information Extraction, Sentiment Analysis, and Question Answering.
 
-Information about the training corpus can be found in: <http://clic.ub.edu/corpus/es/node/171>.
+## Features
+
+- Detects negation signals in Spanish texts
+- Identifies the scope of negations
+- Built using supervised machine learning techniques
+
+## Installation
+
+To set up the project, clone the repository and install dependencies:
+
+```bash
+git clone https://github.com/lorainemg/negation-detection.git
+cd negation-detection
+pip install -r requirements.txt
+```
+
+## Usage
+
+After setting up, you can use the script for negation detection. Specific instructions on how to run the model can be added here.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+This work utilizes a corpus from [Clic Corpus](http://clic.ub.edu/corpus/es/node/171) for training.
+
