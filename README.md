@@ -15,7 +15,7 @@ To set up the project, clone the repository and install dependencies:
 ```bash
 git clone https://github.com/lorainemg/negation-detection.git
 cd negation-detection
-pip install -r requirements.txt
+docker-compose up
 ```
 
 ## Usage
